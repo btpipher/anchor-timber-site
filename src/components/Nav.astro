@@ -1,0 +1,80 @@
+---
+import { siteConfig, withBase, withAsset } from '../config/site';
+
+const navLinks = [
+  { href: '/', label: 'Home' },
+  { href: '/products', label: 'Products' },
+  { href: '/services', label: 'Services' },
+  { href: '/gallery', label: 'Gallery' },
+  { href: '/faq', label: 'FAQ' },
+  { href: '/quote', label: 'Quote' },
+];
+
+const baseUrl = import.meta.env.BASE_URL;
+const currentPath = Astro.url.pathname.replace(baseUrl, '/');
+const isActive = (href) => {
+  if (href === '/') return currentPath === '/';
+  return currentPath.startsWith(href);
+};
+---
+<header>
+  <div class="container nav">
+    <a class="nav-brand" href={withBase('/')}>
+      <img
+        class="nav-logo"
+        src={withAsset('/logos/anchor only.png')}
+        alt="Anchor Timber anchor logo"
+        width="44"
+        height="44"
+        loading="eager"
+      />
+      <span class="nav-brand-text">
+        <span class="nav-brand-name">{siteConfig.companyName}</span>
+        <span class="nav-brand-location">{siteConfig.location}</span>
+      </span>
+    </a>
+    <button
+      class="nav-toggle"
+      type="button"
+      aria-expanded="false"
+      aria-controls="primary-nav"
+      data-nav-toggle
+    >
+      Menu
+    </button>
+    <div class="nav-links" id="primary-nav" data-open="false" data-nav-links>
+      {navLinks.map((link) => (
+        <a href={withBase(link.href)} aria-current={isActive(link.href) ? 'page' : undefined}>
+          {link.label}
+        </a>
+      ))}
+      <a class="btn btn-primary" href={withBase('/quote')}>{siteConfig.cta.primary}</a>
+    </div>
+  </div>
+</header>
+
+<script>
+  const toggle = document.querySelector('[data-nav-toggle]');
+  const panel = document.querySelector('[data-nav-links]');
+
+  if (toggle && panel) {
+    const closeMenu = () => {
+      panel.dataset.open = 'false';
+      toggle.setAttribute('aria-expanded', 'false');
+    };
+
+    toggle.addEventListener('click', () => {
+      const isOpen = panel.dataset.open === 'true';
+      panel.dataset.open = isOpen ? 'false' : 'true';
+      toggle.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
+    });
+
+    panel.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', () => closeMenu());
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') closeMenu();
+    });
+  }
+</script>

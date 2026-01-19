@@ -1,0 +1,34 @@
+---
+import CTAButtons from './CTAButtons.astro';
+
+const { title, tagline, description, stats = [] } = Astro.props;
+---
+<section class="hero">
+  <div class="container hero-inner">
+    <div>
+      <div class="badge">Rugged / Precise / Local</div>
+      <h1>{title}</h1>
+      {tagline && <p class="eyebrow">{tagline}</p>}
+      {description && <p>{description}</p>}
+      <div class="btn-group" style="margin-top: var(--space-3);">
+        <CTAButtons />
+      </div>
+    </div>
+    {stats.length > 0 && (
+      <div class="card hero-card">
+        <div class="section-header" style="margin-bottom: var(--space-2);">
+          <h3>At a Glance</h3>
+          <p>{stats[0]?.note ?? 'Built for custom work and serious material.'}</p>
+        </div>
+        <div class="stat-grid">
+          {stats.map((stat) => (
+            <div class="stat">
+              <h4>{stat.label}</h4>
+              <span>{stat.value}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    )}
+  </div>
+</section>

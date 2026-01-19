@@ -1,0 +1,33 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Section from '../components/Section.astro';
+import CTAButtons from '../components/CTAButtons.astro';
+---
+<BaseLayout title="Gallery" description="Anchor Timber gallery of Aspen T&G, slabs, beams, and custom milling.">
+  <Section
+    eyebrow="Gallery"
+    title="Milling Projects"
+    subtitle="Placeholder grid for Aspen T&G, slabs, beams, and custom projects."
+  >
+    <div class="btn-group" style="margin-bottom: var(--space-3);">
+      <button class="btn btn-tertiary" type="button">Aspen T&amp;G</button>
+      <button class="btn btn-tertiary" type="button">Slabs</button>
+      <button class="btn btn-tertiary" type="button">Beams</button>
+      <button class="btn btn-tertiary" type="button">Milling</button>
+      <button class="btn btn-tertiary" type="button">Custom Projects</button>
+    </div>
+    <div class="gallery-grid">
+      {Array.from({ length: 12 }).map(() => (
+        <div class="gallery-item"></div>
+      ))}
+    </div>
+  </Section>
+
+  <Section eyebrow="Quote" title="Plan a Custom Project" subtitle="Tell us what you want to build and we will mill it. ">
+    <div class="cta-band">
+      <div class="btn-group">
+        <CTAButtons />
+      </div>
+    </div>
+  </Section>
+</BaseLayout>

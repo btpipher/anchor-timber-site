@@ -1,0 +1,136 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import Section from '../components/Section.astro';
+import Card from '../components/Card.astro';
+import CTAButtons from '../components/CTAButtons.astro';
+import FAQAccordion from '../components/FAQAccordion.astro';
+import { siteConfig, withBase } from '../config/site';
+
+const heroStats = [
+  { label: 'Location', value: 'Crawford, CO' },
+  { label: 'Lead Time', value: siteConfig.leadTime },
+  { label: 'Delivery', value: 'Available (details on request)' },
+  { label: 'Custom Cuts', value: 'Up to 40ft beams' },
+];
+
+const faqPreview = [
+  {
+    question: 'What is Aspen tongue-and-groove used for?',
+    answer:
+      'Aspen T&G is a signature interior finish for walls, ceilings, and cabins, prized for its warmth and clean grain.',
+  },
+  {
+    question: 'Can you cut long beams?',
+    answer:
+      'Yes. We can mill beams and timbers up to 40ft, ideal for barns, pavilions, and custom structures.',
+  },
+  {
+    question: 'Do you offer planing or surfacing?',
+    answer:
+      'We can surface and plane material for a ready-to-install finish. Confirm options when requesting a quote.',
+  },
+  {
+    question: 'What are typical lead times?',
+    answer:
+      `Current lead times are ${siteConfig.leadTime}. Larger custom orders may vary by season.`,
+  },
+];
+---
+<BaseLayout title={siteConfig.companyName} description={siteConfig.description}>
+  <Hero
+    title={siteConfig.companyName}
+    tagline={siteConfig.tagline}
+    description={`Locally owned by ${siteConfig.owner}, Anchor Timber mills premium Aspen tongue-and-groove, slabs, beams, and custom lumber with serious capability.`}
+    stats={heroStats}
+  />
+
+  <Section
+    eyebrow="Signature Work"
+    title="Featured Specialties"
+    subtitle="Premium Aspen T&G and oversized timber capability that sets Anchor Timber apart."
+  >
+    <div class="grid grid-2">
+      <Card
+        tag="Aspen T&G"
+        title="Aspen Tongue-and-Groove"
+        text="Signature boards milled for clean fit, tight joints, and a smooth finish. Ideal for ceilings, walls, and cabins that need a premium look."
+      />
+      <Card
+        tag="40ft Capability"
+        title="Beams Up to 40ft"
+        text="Oversized milling capacity for long structural beams and timbers. Perfect for spans, trusses, and statement framing."
+      />
+    </div>
+  </Section>
+
+  <Section
+    eyebrow="Products"
+    title="Milled for Your Build"
+    subtitle="Custom-sized and finished lumber made to spec."
+  >
+    <div class="grid grid-3">
+      <Card
+        title="Aspen Tongue-and-Groove"
+        text="Featured product with consistent profiles, smooth faces, and precise fit."
+      />
+      <Card title="Live-Edge Slabs" text="Statement slabs for furniture, bars, and custom projects." />
+      <Card title="Beams & Timbers" text="Up to 40ft lengths for serious structures and heavy framing." />
+      <Card title="Dimensional Lumber" text="Reliable 2x stock and custom sizing for builders and ranches." />
+      <Card title="Ranch & Fencing" text="Rugged material for posts, rails, and outdoor utility." />
+      <Card title="Custom Orders" text="Special species, profiles, and one-off requests." />
+    </div>
+  </Section>
+
+  <Section
+    eyebrow="Services"
+    title="Custom Milling Services"
+    subtitle="Bring logs or a cut list and we will handle the milling, surfacing, and delivery."
+  >
+    <div class="grid grid-3">
+      <Card title="Bring-Your-Logs Milling" text="We mill your logs into dimensional lumber, slabs, or custom profiles." />
+      <Card title="Planing & Surfacing" text="Smooth, ready-to-install material with consistent thickness." />
+      <Card title="Drying / Kiln Drying" text="Seasoning options available as needed (confirm availability)." />
+      <Card title="Specialty Cuts" text="Custom dimensions, large beams, and unique profiles." />
+      <Card title="Delivery" text="Schedule pickup or delivery across the Western Slope." />
+    </div>
+  </Section>
+
+  <Section
+    eyebrow="Why Anchor Timber"
+    title="Built for Quality and Control"
+    subtitle="Local, transparent, and responsive milling with premium results."
+  >
+    <div class="grid grid-3">
+      <Card title="Local Ownership" text={`Owned and operated by ${siteConfig.owner} in ${siteConfig.location}.`} />
+      <Card title="Quality Control" text="Every board is inspected, stacked, and finished with care." />
+      <Card title="Custom Work" text="We specialize in non-standard sizes and unique profiles." />
+      <Card title="Transparent Process" text="Clear quotes, clear timelines, and honest updates." />
+      <Card title="Reliable Turnaround" text={`Typical lead time: ${siteConfig.leadTime}.`} />
+    </div>
+  </Section>
+
+  <Section eyebrow="Gallery" title="Recent Work" subtitle="Placeholder previews for slabs, beams, and Aspen T&G.">
+    <div class="gallery-grid">
+      {Array.from({ length: 8 }).map(() => (
+        <div class="gallery-item"></div>
+      ))}
+    </div>
+  </Section>
+
+  <Section eyebrow="FAQ" title="Quick Answers" subtitle="More details on custom milling and Aspen T&G.">
+    <FAQAccordion items={faqPreview} />
+    <div class="btn-group" style="margin-top: var(--space-3);">
+      <a class="btn btn-tertiary" href={withBase('/faq')}>View full FAQ</a>
+    </div>
+  </Section>
+
+  <Section eyebrow="Ready" title="Start Your Quote" subtitle="Share your specs and we will confirm timeline, pricing, and availability.">
+    <div class="cta-band">
+      <p>Use the quote form or call/text to get rolling on your project.</p>
+      <div class="btn-group">
+        <CTAButtons />
+      </div>
+    </div>
+  </Section>
+</BaseLayout>

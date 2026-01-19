@@ -1,0 +1,42 @@
+---
+import { siteConfig, withBase } from '../config/site';
+
+const navLinks = [
+  { href: '/', label: 'Home' },
+  { href: '/products', label: 'Products' },
+  { href: '/services', label: 'Services' },
+  { href: '/gallery', label: 'Gallery' },
+  { href: '/faq', label: 'FAQ' },
+  { href: '/quote', label: 'Quote' },
+];
+---
+<footer>
+  <div class="container footer-grid">
+    <div>
+      <h4>{siteConfig.companyName}</h4>
+      <p>Owner: {siteConfig.owner}</p>
+      <p>{siteConfig.serviceArea}</p>
+    </div>
+    <div>
+      <h4>Contact</h4>
+      <p>
+        <a href={siteConfig.phoneHref}>{siteConfig.phone}</a>
+      </p>
+      <p>{siteConfig.hours}</p>
+      <p>{siteConfig.address}</p>
+    </div>
+    <div>
+      <h4>Explore</h4>
+      {navLinks.map((link) => (
+        <p>
+          <a href={withBase(link.href)}>{link.label}</a>
+        </p>
+      ))}
+    </div>
+    <div>
+      <h4>Signature</h4>
+      <p>Aspen tongue-and-groove interior finishes</p>
+      <p>40ft beam capability for custom builds</p>
+    </div>
+  </div>
+</footer>

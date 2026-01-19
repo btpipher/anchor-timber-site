@@ -1,0 +1,101 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Section from '../components/Section.astro';
+import { siteConfig } from '../config/site';
+import CTAButtons from '../components/CTAButtons.astro';
+---
+<BaseLayout title="Request a Quote" description="Request a quote from Anchor Timber for custom milling, Aspen T&G, slabs, and beams.">
+  <Section
+    eyebrow="Quote"
+    title="Request a Quote"
+    subtitle="Tell us about your project and we will confirm pricing, lead time, and availability."
+  >
+    <div class="grid grid-2">
+      <form class="card" action="#" method="post">
+        <div class="form-grid">
+          <label>
+            Name
+            <input type="text" name="name" placeholder="Your name" required />
+          </label>
+          <label>
+            Email
+            <input type="email" name="email" placeholder="you@example.com" required />
+          </label>
+          <label>
+            Phone
+            <input type="tel" name="phone" placeholder={siteConfig.phone} required />
+          </label>
+          <div>
+            <p style="margin: 0 0 0.5rem 0; color: var(--color-muted);">Interest</p>
+            <div class="checkbox-grid">
+              {[
+                'Aspen T&G',
+                'Beams/Timbers',
+                'Slabs',
+                'Dimensional',
+                'Custom Milling',
+                'Surfacing',
+                'Drying',
+                'Delivery',
+              ].map((item) => (
+                <label>
+                  <input type="checkbox" name="interest" value={item} />
+                  {item}
+                </label>
+              ))}
+            </div>
+          </div>
+          <label>
+            Species (optional)
+            <input type="text" name="species" placeholder="Aspen, pine, hardwoods" />
+          </label>
+          <label>
+            Dimensions / Lengths
+            <textarea name="dimensions" placeholder="Thickness, width, length ranges"></textarea>
+          </label>
+          <label>
+            Quantity / Board Feet (optional)
+            <input type="text" name="quantity" placeholder="Approximate volume" />
+          </label>
+          <label>
+            Delivery or Pickup + Location
+            <input type="text" name="delivery" placeholder="Delivery to / Pickup at Crawford" />
+          </label>
+          <label>
+            Timeline
+            <input type="text" name="timeline" placeholder="Ideal start date" />
+          </label>
+          <label>
+            Message
+            <textarea name="message" placeholder="Tell us about your project"></textarea>
+          </label>
+        </div>
+        <div class="btn-group" style="margin-top: var(--space-3);">
+          <button class="btn btn-primary" type="submit">{siteConfig.cta.primary}</button>
+          <a class="btn btn-secondary" href={siteConfig.phoneHref}>{siteConfig.cta.secondary}</a>
+        </div>
+      </form>
+      <div class="grid">
+        <div class="card">
+          <h3>Call/Text</h3>
+          <p>
+            <a href={siteConfig.phoneHref}>{siteConfig.phone}</a>
+          </p>
+          <p>{siteConfig.hours}</p>
+        </div>
+        <div class="card">
+          <h3>Location</h3>
+          <p>{siteConfig.address}</p>
+          <p>{siteConfig.serviceArea}</p>
+        </div>
+        <div class="card">
+          <h3>Need Products?</h3>
+          <p>Browse Aspen T&G, slabs, beams, and custom milling services.</p>
+          <div class="btn-group">
+            <CTAButtons />
+          </div>
+        </div>
+      </div>
+    </div>
+  </Section>
+</BaseLayout>

@@ -1,0 +1,61 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Section from '../components/Section.astro';
+import Card from '../components/Card.astro';
+import CTAButtons from '../components/CTAButtons.astro';
+import { siteConfig } from '../config/site';
+---
+<BaseLayout title="Services" description="Custom milling services from Anchor Timber in Crawford, Colorado.">
+  <Section
+    eyebrow="Services"
+    title="Custom Milling Services"
+    subtitle="From raw logs to finished boards, we cover the full milling workflow."
+  >
+    <div class="grid grid-3">
+      <Card
+        title="Custom Milling"
+        text="Cut-to-spec lumber, slabs, and timbers from your logs or ours."
+      />
+      <Card
+        title="Surfacing & Planing"
+        text="Precision surfacing for consistent thickness and clean finish."
+      />
+      <Card
+        title="Drying / Kiln Drying"
+        text="Drying options available as needed (placeholder)."
+      />
+      <Card
+        title="Specialty Cuts"
+        text="Non-standard dimensions, long spans, and custom profiles."
+      />
+      <Card
+        title="Delivery"
+        text={`${siteConfig.serviceArea}. Confirm scheduling with your quote.`}
+      />
+    </div>
+  </Section>
+
+  <Section
+    eyebrow="Process"
+    title="How It Works"
+    subtitle="A simple flow from request to pickup or delivery."
+  >
+    <div class="grid grid-2">
+      <Card title="1) Tell Us What You Need" text="Share your project goals, species, and desired products." />
+      <Card
+        title="2) Share Dimensions / Quantity"
+        text="Send a cut list or bring logs for custom milling."
+      />
+      <Card title="3) Confirm Timeline + Quote" text="We review lead time and provide a clear quote." />
+      <Card title="4) Pickup or Delivery" text="Coordinate pickup in Crawford or schedule delivery." />
+    </div>
+  </Section>
+
+  <Section eyebrow="Quote" title="Start Your Quote" subtitle="We will confirm specs, timing, and availability.">
+    <div class="cta-band">
+      <div class="btn-group">
+        <CTAButtons />
+      </div>
+    </div>
+  </Section>
+</BaseLayout>

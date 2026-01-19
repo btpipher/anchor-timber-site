@@ -1,0 +1,30 @@
+---
+const { items = [] } = Astro.props;
+---
+<div class="faq" data-faq>
+  {items.map((item, index) => (
+    <details open={index === 0}>
+      <summary>
+        {item.question}
+        <span>+</span>
+      </summary>
+      <p>{item.answer}</p>
+    </details>
+  ))}
+</div>
+
+<script>
+  const faq = document.querySelector('[data-faq]');
+  if (faq) {
+    const details = faq.querySelectorAll('details');
+    details.forEach((item) => {
+      item.addEventListener('toggle', () => {
+        if (item.open) {
+          details.forEach((other) => {
+            if (other !== item) other.open = false;
+          });
+        }
+      });
+    });
+  }
+</script>

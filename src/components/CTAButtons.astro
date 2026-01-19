@@ -1,0 +1,8 @@
+---
+import { siteConfig, withBase } from '../config/site';
+
+const { primary = siteConfig.cta.primary, secondary = siteConfig.cta.secondary, tertiary = siteConfig.cta.tertiary } = Astro.props;
+---
+<a class="btn btn-primary" href={withBase('/quote')}>{primary}</a>
+<a class="btn btn-secondary" href={siteConfig.phoneHref}>{secondary}</a>
+<a class="btn btn-tertiary" href={withBase('/products')}>{tertiary}</a>

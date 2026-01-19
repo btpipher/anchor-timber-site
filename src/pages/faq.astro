@@ -1,0 +1,62 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Section from '../components/Section.astro';
+import FAQAccordion from '../components/FAQAccordion.astro';
+import CTAButtons from '../components/CTAButtons.astro';
+import { siteConfig } from '../config/site';
+
+const faqItems = [
+  {
+    question: 'What is Aspen tongue-and-groove and where is it used?',
+    answer:
+      'Aspen tongue-and-groove is a finished interior board with interlocking edges. It is commonly used on walls and ceilings in cabins, homes, and commercial spaces for a warm, clean look.',
+  },
+  {
+    question: 'What lengths/sizes can you do for T&G?',
+    answer:
+      'We offer standard lengths plus custom runs. Share your desired thickness, face width, and run length for an exact quote (placeholders until confirmed).',
+  },
+  {
+    question: 'Can you cut long beams (up to 40ft)?',
+    answer:
+      'Yes. We can mill beams and timbers up to 40ft, depending on species and availability.',
+  },
+  {
+    question: 'What species do you mill?',
+    answer:
+      'Aspen is our signature species, with additional availability for structural species and hardwoods. Contact us for current stock and sourcing.',
+  },
+  {
+    question: 'Can I bring my own logs?',
+    answer:
+      'Absolutely. Bring-your-logs milling is available for slabs, dimensional lumber, and custom profiles.',
+  },
+  {
+    question: 'Typical lead times?',
+    answer:
+      `Lead times are typically ${siteConfig.leadTime}, with seasonal variation for large custom orders.`,
+  },
+  {
+    question: 'Do you deliver?',
+    answer:
+      `Yes. ${siteConfig.serviceArea}; details confirmed during quoting.`,
+  },
+];
+---
+<BaseLayout title="FAQ" description="Frequently asked questions about Anchor Timber milling, Aspen T&G, and custom lumber.">
+  <Section
+    eyebrow="FAQ"
+    title="Answers Before You Order"
+    subtitle="Quick details on Aspen T&G, custom milling, and oversized beams."
+  >
+    <FAQAccordion items={faqItems} />
+  </Section>
+
+  <Section eyebrow="Quote" title="Need More Details?" subtitle="Send a request and we will confirm specs and timing.">
+    <div class="cta-band">
+      <div class="btn-group">
+        <CTAButtons />
+      </div>
+    </div>
+  </Section>
+</BaseLayout>

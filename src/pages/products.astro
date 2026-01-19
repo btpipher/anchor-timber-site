@@ -1,0 +1,64 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Section from '../components/Section.astro';
+import Card from '../components/Card.astro';
+import CTAButtons from '../components/CTAButtons.astro';
+import { siteConfig } from '../config/site';
+---
+<BaseLayout title="Products" description="Anchor Timber products including Aspen tongue-and-groove, slabs, beams, and custom lumber.">
+  <Section
+    eyebrow="Signature Product"
+    title="Aspen Tongue-and-Groove"
+    subtitle="Our flagship interior finish with crisp profiles, tight joints, and premium Aspen grain."
+  >
+    <div class="grid grid-2">
+      <Card title="Profile Options" text="Placeholder for V-groove, square edge, and custom profiles." />
+      <Card title="Thickness / Width" text="Placeholder for thickness and face width options." />
+      <Card title="Typical Lengths" text="Placeholder for standard and custom run lengths." />
+      <Card title="Finish Options" text="Placeholder for natural, sanded, or prefinished options." />
+      <Card title="Volume Pricing" text="Placeholder for tiered pricing and large-order availability." />
+    </div>
+  </Section>
+
+  <Section eyebrow="Product Lines" title="Core Product Categories" subtitle="Built to spec for builders, ranches, and custom installs.">
+    <div class="grid grid-3">
+      <Card title="Live-Edge Slabs" text="Statement pieces for tables, counters, and custom builds." />
+      <Card title="Beams & Timbers" text="Custom milled beams and timbers up to 40ft in length." />
+      <Card title="Dimensional Lumber" text="Standard and custom thickness for framing and finish." />
+      <Card title="Ranch & Fencing" text="Utility lumber for posts, rails, and ranch structures." />
+      <Card title="Custom Orders" text="Request special profiles, dimensions, or drying." />
+      <Card title="Aspen T&G Add-ons" text="Trim, casing, and matching interior elements." />
+    </div>
+  </Section>
+
+  <Section
+    eyebrow="Oversized Capability"
+    title="Beams and Timbers"
+    subtitle="Large-dimension milling for long spans and heavy structure."
+  >
+    <div class="card">
+      <h3>Up to 40ft Beams</h3>
+      <p>
+        We can mill long, straight beams up to 40ft for trusses, pavilions, barns, and
+        custom architecture. Confirm species, sizing, and lead times when requesting a quote.
+      </p>
+    </div>
+  </Section>
+
+  <Section eyebrow="Species" title="Species & Availability" subtitle="Availability changes seasonally. Contact us for current stock.">
+    <div class="grid grid-2">
+      <Card title="Aspen" text="Signature species for T&G and interior finish work." />
+      <Card title="Pine / Fir" text="Placeholder for structural and general-use lumber." />
+      <Card title="Hardwoods" text="Placeholder for slabs and specialty projects." />
+      <Card title="Custom Requests" text="Tell us the species or log source you want milled." />
+    </div>
+  </Section>
+
+  <Section eyebrow="Quote" title="Ready for Pricing" subtitle="Share your specs and we will confirm timeline and volume pricing.">
+    <div class="cta-band">
+      <div class="btn-group">
+        <CTAButtons />
+      </div>
+    </div>
+  </Section>
+</BaseLayout>
