@@ -1,13 +1,24 @@
 ---
 import CTAButtons from './CTAButtons.astro';
+import { withAsset } from '../config/site';
 
 const { title, tagline, description, stats = [] } = Astro.props;
 ---
-<section class="hero">
+<section
+  class="hero hero-watermark"
+  style={`--hero-logo: url('${withAsset('/logos/anchor_timber.png')}')`}
+>
   <div class="container hero-inner">
     <div>
-      <div class="badge">Rugged / Precise / Local</div>
-      <h1>{title}</h1>
+      <img
+        class="hero-title-logo"
+        src={withAsset('/logos/anchor_timber.png')}
+        alt="Anchor Timber logo"
+        width="420"
+        height="280"
+        loading="eager"
+      />
+      <h1 class="hero-title">{title}</h1>
       {tagline && <p class="eyebrow">{tagline}</p>}
       {description && <p>{description}</p>}
       <div class="btn-group" style="margin-top: var(--space-3);">
@@ -18,7 +29,7 @@ const { title, tagline, description, stats = [] } = Astro.props;
       <div class="card hero-card">
         <div class="section-header" style="margin-bottom: var(--space-2);">
           <h3>At a Glance</h3>
-          <p>{stats[0]?.note ?? 'Built for custom work and serious material.'}</p>
+          <p>{stats[0]?.note ?? ''}</p>
         </div>
         <div class="stat-grid">
           {stats.map((stat) => (

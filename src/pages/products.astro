@@ -5,7 +5,7 @@ import Card from '../components/Card.astro';
 import CTAButtons from '../components/CTAButtons.astro';
 import { siteConfig } from '../config/site';
 ---
-<BaseLayout title="Products" description="Anchor Timber products including Aspen tongue-and-groove, slabs, beams, and custom lumber.">
+<BaseLayout title="Products" description="Anchor Timber products including Aspen tongue-and-groove, Blue Stain Pine, beams, and custom lumber.">
   <Section
     eyebrow="Signature Product"
     title="Aspen Tongue-and-Groove"
@@ -22,7 +22,10 @@ import { siteConfig } from '../config/site';
 
   <Section eyebrow="Product Lines" title="Core Product Categories" subtitle="Built to spec for builders, ranches, and custom installs.">
     <div class="grid grid-3">
-      <Card title="Live-Edge Slabs" text="Statement pieces for tables, counters, and custom builds." />
+      <Card
+        title="Blue Stain Pine"
+        text="Character-rich pine boards with blue stain for rustic builds and accent work."
+      />
       <Card title="Beams & Timbers" text="Custom milled beams and timbers up to 40ft in length." />
       <Card title="Dimensional Lumber" text="Standard and custom thickness for framing and finish." />
       <Card title="Ranch & Fencing" text="Utility lumber for posts, rails, and ranch structures." />
@@ -49,7 +52,7 @@ import { siteConfig } from '../config/site';
     <div class="grid grid-2">
       <Card title="Aspen" text="Signature species for T&G and interior finish work." />
       <Card title="Pine / Fir" text="Placeholder for structural and general-use lumber." />
-      <Card title="Hardwoods" text="Placeholder for slabs and specialty projects." />
+      <Card title="Hardwoods" text="Placeholder for Blue Stain Pine and specialty projects." />
       <Card title="Custom Requests" text="Tell us the species or log source you want milled." />
     </div>
   </Section>

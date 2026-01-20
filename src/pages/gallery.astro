@@ -2,32 +2,195 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Section from '../components/Section.astro';
 import CTAButtons from '../components/CTAButtons.astro';
+import { withAsset } from '../config/site';
+import fs from 'node:fs';
+import path from 'node:path';
+
+const imageRoot = path.resolve('public', 'images');
+const imageExtensions = new Set([
+  '.jpg',
+  '.jpeg',
+  '.png',
+  '.webp',
+  '.avif',
+  '.gif',
+  '.heic',
+  '.heif',
+]);
+
+const sections = [
+  {
+    id: 'aspen-tng',
+    label: 'Aspen T&G',
+    folder: 'aspen-tng',
+    description: 'Aspen tongue-and-groove boards, profile shots, and installs.',
+  },
+  {
+    id: 'bsp',
+    label: 'Blue Stain Pine',
+    folder: 'bsp',
+    description: 'Blue stain pine (BSP) boards and character grain.',
+  },
+  {
+    id: 'rough-cut',
+    label: 'Rough Cut',
+    folder: 'rough-cut',
+    description: 'Rough cut lumber, stacks, and mill output.',
+  },
+  {
+    id: 'beams',
+    label: 'Beams',
+    folder: 'beams',
+    description: 'Large beams, long spans, and heavy timber work.',
+  },
+  {
+    id: 'house-logs',
+    label: 'House Logs',
+    folder: 'house-logs',
+    description: 'House log material and log packages.',
+  },
+  {
+    id: 'logs',
+    label: 'Logs',
+    folder: 'logs',
+    description: '',
+  },
+  {
+    id: 'fence-supplies',
+    label: 'Fence Supplies',
+    folder: 'fence-supplies',
+    description: 'Posts, rails, planks, stays, and fencing material.',
+  },
+  {
+    id: 'misc',
+    label: 'Misc',
+    folder: 'misc',
+    description: 'Additional mill, shop, and yard products.',
+  },
+];
+
+const readImages = (folder) => {
+  const dir = path.join(imageRoot, folder);
+  if (!fs.existsSync(dir)) return [];
+
+  return fs
+    .readdirSync(dir)
+    .filter((file) => imageExtensions.has(path.extname(file).toLowerCase()))
+    .sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' }));
+};
+
+const gallerySections = sections.map((section) => ({
+  ...section,
+  images: readImages(section.folder),
+}));
 ---
-<BaseLayout title="Gallery" description="Anchor Timber gallery of Aspen T&G, slabs, beams, and custom milling.">
+<BaseLayout title="Gallery" description="Anchor Timber gallery of Aspen T&G, Blue Stain Pine, beams, and custom milling.">
   <Section
     eyebrow="Gallery"
-    title="Milling Projects"
-    subtitle="Placeholder grid for Aspen T&G, slabs, beams, and custom projects."
+    title="Anchor Timber Photo Library"
+    subtitle="Jump to a material category below and scroll through every image in that folder."
   >
-    <div class="btn-group" style="margin-bottom: var(--space-3);">
-      <button class="btn btn-tertiary" type="button">Aspen T&amp;G</button>
-      <button class="btn btn-tertiary" type="button">Slabs</button>
-      <button class="btn btn-tertiary" type="button">Beams</button>
-      <button class="btn btn-tertiary" type="button">Milling</button>
-      <button class="btn btn-tertiary" type="button">Custom Projects</button>
-    </div>
-    <div class="gallery-grid">
-      {Array.from({ length: 12 }).map(() => (
-        <div class="gallery-item"></div>
+    <nav class="gallery-nav" aria-label="Gallery sections">
+      {gallerySections.map((section) => (
+        <a class="btn btn-tertiary" href={`#${section.id}`}>
+          {section.label}
+        </a>
       ))}
-    </div>
+    </nav>
   </Section>
 
-  <Section eyebrow="Quote" title="Plan a Custom Project" subtitle="Tell us what you want to build and we will mill it. ">
+  {gallerySections.map((section) => (
+    <Section id={section.id} eyebrow="Gallery" title={section.label} subtitle={section.description}>
+      {section.images.length ? (
+        <div class="gallery-grid gallery-grid--photos">
+          {section.images.map((image, index) => (
+            <figure class="gallery-photo">
+              <button
+                class="gallery-trigger"
+                type="button"
+                data-lightbox-src={withAsset(`/images/${section.folder}/${image}`)}
+                data-lightbox-alt={`${section.label} photo ${index + 1}`}
+                aria-label={`Open ${section.label} photo ${index + 1}`}
+              >
+                <img
+                  src={withAsset(`/images/${section.folder}/${image}`)}
+                  alt={`${section.label} photo ${index + 1}`}
+                  loading="lazy"
+                  decoding="async"
+                />
+              </button>
+            </figure>
+          ))}
+        </div>
+      ) : (
+        <div class="card gallery-empty">
+          <p>
+            No photos yet. Add images to public/images/{section.folder}.
+          </p>
+        </div>
+      )}
+    </Section>
+  ))}
+
+  <Section eyebrow="Quote" title="Plan a Custom Project" subtitle="Tell us what you want to build and we will mill it.">
     <div class="cta-band">
       <div class="btn-group">
         <CTAButtons />
       </div>
     </div>
   </Section>
+
+  <div class="lightbox" data-lightbox aria-hidden="true" hidden>
+    <div class="lightbox-backdrop" data-lightbox-close></div>
+    <div class="lightbox-content" role="dialog" aria-modal="true" aria-label="Image preview">
+      <button class="lightbox-close" type="button" data-lightbox-close>Close</button>
+      <img src="" alt="" data-lightbox-image />
+    </div>
+  </div>
 </BaseLayout>
+
+<script>
+  const lightbox = document.querySelector('[data-lightbox]');
+  const lightboxImage = lightbox?.querySelector('[data-lightbox-image]');
+  const triggers = document.querySelectorAll('[data-lightbox-src]');
+  const closeTargets = lightbox?.querySelectorAll('[data-lightbox-close]');
+
+  if (lightbox) {
+    lightbox.hidden = true;
+    lightbox.setAttribute('aria-hidden', 'true');
+  }
+
+  const openLightbox = (src, alt) => {
+    if (!lightbox || !lightboxImage) return;
+    lightboxImage.src = src;
+    lightboxImage.alt = alt || 'Gallery image';
+    lightbox.hidden = false;
+    lightbox.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  };
+
+  const closeLightbox = () => {
+    if (!lightbox || !lightboxImage) return;
+    lightbox.hidden = true;
+    lightbox.setAttribute('aria-hidden', 'true');
+    lightboxImage.src = '';
+    lightboxImage.alt = '';
+    document.body.style.overflow = '';
+  };
+
+  triggers.forEach((trigger) => {
+    trigger.addEventListener('click', () => {
+      const src = trigger.getAttribute('data-lightbox-src');
+      const alt = trigger.getAttribute('data-lightbox-alt');
+      if (src) openLightbox(src, alt);
+    });
+  });
+
+  closeTargets?.forEach((target) => {
+    target.addEventListener('click', closeLightbox);
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') closeLightbox();
+  });
+</script>

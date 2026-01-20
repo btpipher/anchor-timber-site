@@ -17,9 +17,9 @@ export const siteConfig = {
   phoneHref: 'tel:+19705550123',
   location: 'Crawford, Colorado',
   address: 'Crawford, CO',
-  serviceArea: 'Serving Crawford + the Western Slope',
+  serviceArea: 'Serving the western slope & beyond.',
   hours: 'Mon-Fri: 8am-5pm (placeholder)',
-  leadTime: '1-3 weeks (placeholder)',
+  leadTime: 'Dependant on order',
   accentColor: '#C28B4A',
   cta: {
     primary: 'Request a Quote',
@@ -27,7 +27,7 @@ export const siteConfig = {
     tertiary: 'View Products'
   },
   tagline:
-    'Aspen Tongue & Groove - Custom Milling - Slabs - 40ft Beams - Crawford, CO',
+    'Aspen Tongue & Groove - Custom Milling - Blue Stain Pine - 40ft Beams - Crawford, CO',
   description:
-    'Custom milling, Aspen tongue-and-groove, slabs, beams, and premium lumber from Crawford, Colorado.',
+    'Custom milling, Aspen tongue-and-groove, Blue Stain Pine, beams, and premium lumber from Crawford, Colorado.',
 };
