@@ -1,30 +1,31 @@
-# Vercel Deployment
+# GitHub Pages Deployment
 
-This project is a standard static Astro site deployed from the repository root.
+This project is a standard static Astro site deployed to GitHub Pages from the repository root.
 
-## Vercel Dashboard Settings
+## Current Astro Pages Config
 
-- Framework Preset: `Astro`
-- Root Directory: `.`
-- Install Command: `npm install`
-- Build Command: `npm run build`
-- Output Directory: `dist`
+- Site URL: `https://btpipher.github.io`
+- Base Path: `/anchor-timber-site`
+- Output: static
+
+The `base` value is required for project pages on GitHub Pages so CSS, images, and internal links resolve under the repository path.
+
+## Deploy Method
+
+Deployment is handled by the GitHub Actions workflow at `.github/workflows/deploy.yml`.
+
+On each push to `main`, GitHub Actions builds the Astro site and deploys it to GitHub Pages.
+
+## GitHub Settings
+
+In the GitHub repository:
+
+1. Open `Settings` -> `Pages`.
+2. Set `Source` to `GitHub Actions`.
+3. Keep the default branch as `main`.
 
 ## Notes
 
-- Do not set a custom Astro `base` path for Vercel unless you are intentionally deploying the site under a subpath.
-- No Astro Vercel adapter is required for this project.
-- No `vercel.json` file is required for the normal deployment.
-- The current Astro config builds static output with trailing slashes, which Vercel serves correctly.
-
-## Deploy Checklist
-
-1. Import the repository into Vercel.
-2. Keep the project root at the repository root.
-3. Leave the framework preset as `Astro`.
-4. Confirm the commands and output directory match the settings above.
-5. Deploy.
-
-## When To Change This
-
-Only add an Astro Vercel adapter if the project is later changed to use SSR or other server-only Astro features.
+- Do not remove the Astro `base` setting while using GitHub Pages for this repository.
+- If the repository name changes, update the Astro `base` path to match it.
+- If the GitHub username or organization changes, update the Astro `site` URL.
