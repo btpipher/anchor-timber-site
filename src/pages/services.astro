@@ -5,24 +5,24 @@ import Card from '../components/Card.astro';
 import CTAButtons from '../components/CTAButtons.astro';
 import { siteConfig } from '../config/site';
 ---
-<BaseLayout title="Services" description="Custom milling services from Anchor Timber in Crawford, Colorado.">
+<BaseLayout title="Services" description="Custom milling services from Pipher Forest Products in Crawford, Colorado.">
   <Section
     eyebrow="Services"
-    title="Custom Milling Services"
-    subtitle="From raw logs to finished boards, we cover the full milling workflow."
+    title="Custom milling"
+    subtitle="Call to confirm current services and scheduling."
   >
     <div class="grid grid-3">
       <Card
         title="Custom Milling"
-        text="Cut-to-spec lumber, Blue Stain Pine, and timbers from your logs or ours."
+        text="Lumber and timbers cut to requested dimensions."
       />
       <Card
         title="Surfacing & Planing"
-        text="Precision surfacing for consistent thickness and clean finish."
+        text="Surfacing for consistent thickness."
       />
       <Card
         title="Drying / Kiln Drying"
-        text="Drying options available as needed (placeholder)."
+        text="Call to confirm current drying options."
       />
       <Card
         title="Specialty Cuts"
@@ -37,21 +37,20 @@ import { siteConfig } from '../config/site';
 
   <Section
     eyebrow="Process"
-    title="How It Works"
-    subtitle="A simple flow from request to pickup or delivery."
+    title="Ordering"
   >
     <div class="grid grid-2">
-      <Card title="1) Tell Us What You Need" text="Share your project goals, species, and desired products." />
+      <Card title="1) Product" text="Tell us the product and species." />
       <Card
-        title="2) Share Dimensions / Quantity"
-        text="Send a cut list or bring logs for custom milling."
+        title="2) Dimensions and quantity"
+        text="Send dimensions, quantity, or a cut list."
       />
-      <Card title="3) Confirm Timeline + Quote" text="We review lead time and provide a clear quote." />
-      <Card title="4) Pickup or Delivery" text="Coordinate pickup in Crawford or schedule delivery." />
+      <Card title="3) Price and timing" text="We confirm the price and lead time." />
+      <Card title="4) Pickup or delivery" text="Arrange pickup in Crawford or delivery." />
     </div>
   </Section>
 
-  <Section eyebrow="Quote" title="Start Your Quote" subtitle="We will confirm specs, timing, and availability.">
+  <Section eyebrow="Quote" title="Request pricing" subtitle="Send the product, dimensions, and quantity.">
     <div class="cta-band">
       <div class="btn-group">
         <CTAButtons />

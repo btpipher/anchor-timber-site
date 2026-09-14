@@ -1,0 +1,38 @@
+{
+  "headline": "Firewood.",
+  "intro": "Pickup in Crawford. Call or text for current pricing, availability, and delivery.",
+  "heroImage": "/images/misc/IMG_9860.jpeg",
+  "heroImageAlt": "Wood stacked at Pipher Forest Products",
+  "phone": "(970) 555-0123",
+  "notice": "Call or text before pickup.",
+  "products": [
+    {
+      "name": "Firewood",
+      "description": "Current wood type, quantity, and split size are confirmed when you order.",
+      "price": "Call for current price",
+      "availability": "Call for availability",
+      "image": "/images/logs/IMG_2172.jpeg",
+      "imageAlt": "Logs at Pipher Forest Products"
+    }
+  ],
+  "pickup": "Pickup is available in Crawford by arrangement.",
+  "delivery": "Delivery depends on the order and location. Call or text with your address.",
+  "gallery": [
+    {
+      "image": "/images/misc/IMG_9859.jpeg",
+      "alt": "Wood stacks being moved at the mill"
+    },
+    {
+      "image": "/images/misc/IMG_9860.jpeg",
+      "alt": "Wood stacks ready for transport"
+    },
+    {
+      "image": "/images/logs/IMG_2172.jpeg",
+      "alt": "Aspen logs at the mill"
+    },
+    {
+      "image": "/images/rough-cut/IMG_2174.jpeg",
+      "alt": "Wood material at Pipher Forest Products"
+    }
+  ]
+}

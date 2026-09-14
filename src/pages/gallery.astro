@@ -84,11 +84,11 @@ const gallerySections = sections.map((section) => ({
   images: readImages(section.folder),
 }));
 ---
-<BaseLayout title="Gallery" description="Anchor Timber gallery of Aspen T&G, Blue Stain Pine, beams, and custom milling.">
+<BaseLayout title="Gallery" description="Pipher Forest Products gallery of Aspen T&G, Blue Stain Pine, beams, and custom milling.">
   <Section
     eyebrow="Gallery"
-    title="Anchor Timber Photo Library"
-    subtitle="Jump to a material category below and scroll through every image in that folder."
+    title="Sawmill photos"
+    subtitle="Choose a category."
   >
     <nav class="gallery-nav" aria-label="Gallery sections">
       {gallerySections.map((section) => (
@@ -132,7 +132,7 @@ const gallerySections = sections.map((section) => ({
     </Section>
   ))}
 
-  <Section eyebrow="Quote" title="Plan a Custom Project" subtitle="Tell us what you want to build and we will mill it.">
+  <Section eyebrow="Quote" title="Request pricing" subtitle="Send the product, dimensions, and quantity.">
     <div class="cta-band">
       <div class="btn-group">
         <CTAButtons />

@@ -1,0 +1,32 @@
+{
+  "headline": "Sawmill products and custom milling.",
+  "intro": "Aspen tongue-and-groove, beams, house logs, rough-cut lumber, and fence material.",
+  "heroImage": "/images/house-logs/IMG_2146.jpeg",
+  "heroImageAlt": "House logs milled at Pipher Forest Products",
+  "products": [
+    {
+      "name": "Aspen tongue-and-groove",
+      "description": "Boards for interior walls and ceilings. Ask about profiles, widths, lengths, and drying options.",
+      "price": "Call for pricing",
+      "availability": "Made to order",
+      "image": "/images/aspen-tng/IMG_1995.jpeg",
+      "imageAlt": "Aspen tongue-and-groove boards stacked at the mill"
+    },
+    {
+      "name": "Beams and timbers",
+      "description": "Custom-milled beams and timbers in available species and lengths up to 40 feet.",
+      "price": "Call for pricing",
+      "availability": "Made to order",
+      "image": "/images/beams/IMG_2060.jpeg",
+      "imageAlt": "Large timber beams stacked outdoors"
+    },
+    {
+      "name": "Custom lumber",
+      "description": "Rough-cut and dimensional lumber milled to requested thickness, width, and length.",
+      "price": "Call for pricing",
+      "availability": "Made to order",
+      "image": "/images/rough-cut/IMG_2250.jpeg",
+      "imageAlt": "Stacks of rough-cut lumber"
+    }
+  ]
+}

@@ -1,11 +1,15 @@
 ---
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
+import ContentSync from '../components/ContentSync.astro';
 import { siteConfig } from '../config/site';
 import '../styles/global.css';
 
 const { title = siteConfig.companyName, description = siteConfig.description } = Astro.props;
 const fullTitle = title === siteConfig.companyName ? title : `${title} | ${siteConfig.companyName}`;
+const baseUrl = import.meta.env.BASE_URL;
+const currentPath = Astro.url.pathname.replace(baseUrl, '/');
+const isFirewood = currentPath.startsWith('/firewood');
 ---
 <!doctype html>
 <html lang="en">
@@ -16,12 +20,13 @@ const fullTitle = title === siteConfig.companyName ? title : `${title} | ${siteC
     <meta name="theme-color" content={siteConfig.accentColor} />
     <title>{fullTitle}</title>
   </head>
-  <body style={`--color-accent: ${siteConfig.accentColor};`}>
+  <body class:list={{ 'is-firewood': isFirewood }} style={`--color-accent: ${isFirewood ? '#7a3f27' : siteConfig.accentColor};`}>
     <a class="skip-link" href="#main">Skip to content</a>
     <Nav />
     <main id="main">
       <slot />
     </main>
     <Footer />
+    <ContentSync />
   </body>
 </html>

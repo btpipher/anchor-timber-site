@@ -1,0 +1,121 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import firewood from '../../content/firewood.json';
+import { phoneLink, siteConfig, withAsset } from '../../config/site';
+
+const firewoodPhoneHref = phoneLink(firewood.phone);
+---
+
+<BaseLayout
+  title="Firewood"
+  description="Firewood pickup and delivery from Pipher Forest Products in Crawford, Colorado."
+>
+  <section class="firewood-hero">
+    <div class="container firewood-hero-grid">
+      <div class="firewood-hero-copy">
+        <p class="eyebrow">Pipher Forest Products · Crawford, Colorado</p>
+        <h1 data-live-text="firewood.headline">{firewood.headline}</h1>
+        <p data-live-text="firewood.intro">{firewood.intro}</p>
+        <div class="btn-group">
+          <a class="btn btn-primary" href={firewoodPhoneHref} data-live-phone-href="firewood.phone">Call or text <span data-live-text="firewood.phone">{firewood.phone}</span></a>
+          <a class="btn btn-outline" href="#pricing">View pricing</a>
+        </div>
+      </div>
+      <figure class="firewood-hero-image">
+        <img
+          src={withAsset(firewood.heroImage)}
+          alt={firewood.heroImageAlt}
+          width="4032"
+          height="3024"
+          loading="eager"
+          fetchpriority="high"
+          data-live-image="firewood.heroImage"
+          data-live-alt="firewood.heroImageAlt"
+        />
+        <figcaption data-live-text="firewood.notice">{firewood.notice}</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="firewood-section" id="pricing">
+    <div class="container">
+      <div class="plain-heading">
+        <p class="eyebrow">Pricing</p>
+        <h2>Firewood and availability</h2>
+      </div>
+      <div class="firewood-products" data-live-products="firewood:firewood">
+        {firewood.products.map((product) => (
+          <article class="firewood-product">
+            <img src={withAsset(product.image)} alt={product.imageAlt} loading="lazy" decoding="async" />
+            <div class="firewood-product-copy">
+              <div>
+                <p class="product-availability">{product.availability}</p>
+                <h3>{product.name}</h3>
+                <p>{product.description}</p>
+              </div>
+              <strong>{product.price}</strong>
+            </div>
+          </article>
+        ))}
+      </div>
+      <a class="btn btn-primary" href={firewoodPhoneHref} data-live-phone-href="firewood.phone">Call or text to order</a>
+    </div>
+  </section>
+
+  <section class="firewood-section firewood-logistics" id="pickup-delivery">
+    <div class="container logistics-grid">
+      <div class="plain-heading">
+        <p class="eyebrow">Pickup &amp; delivery</p>
+        <h2>Before you order</h2>
+      </div>
+      <div class="logistics-list">
+        <article>
+          <span>01</span>
+          <h3>Pickup</h3>
+          <p data-live-text="firewood.pickup">{firewood.pickup}</p>
+        </article>
+        <article>
+          <span>02</span>
+          <h3>Delivery</h3>
+          <p data-live-text="firewood.delivery">{firewood.delivery}</p>
+        </article>
+        <article>
+          <span>03</span>
+          <h3>Order</h3>
+          <p>Call or text the quantity you need and your location.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="firewood-section" id="photos">
+    <div class="container">
+      <div class="plain-heading plain-heading-row">
+        <div>
+          <p class="eyebrow">Photos</p>
+          <h2>Firewood</h2>
+        </div>
+        <p>Current gallery photos are temporary and can be replaced in the editor.</p>
+      </div>
+      <div class="firewood-gallery" data-live-gallery="firewood.gallery">
+        {firewood.gallery.map((photo) => (
+          <img src={withAsset(photo.image)} alt={photo.alt} loading="lazy" decoding="async" />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="firewood-callout">
+    <div class="container firewood-callout-inner">
+      <div>
+        <p class="eyebrow">Contact</p>
+        <h2 data-live-text="firewood.phone">{firewood.phone}</h2>
+      </div>
+      <div>
+        <p data-live-text="business.address">{siteConfig.address}</p>
+        <p data-live-text="business.hours">{siteConfig.hours}</p>
+        <a class="btn btn-light" href={firewoodPhoneHref} data-live-phone-href="firewood.phone">Call or text</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

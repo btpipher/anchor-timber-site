@@ -1,0 +1,156 @@
+---
+import '../../styles/admin.css';
+import business from '../../content/business.json';
+import sawmill from '../../content/sawmill.json';
+import firewood from '../../content/firewood.json';
+import { withAsset, withBase } from '../../config/site';
+import fs from 'node:fs';
+import path from 'node:path';
+
+const imageExtensions = new Set(['.jpg', '.jpeg', '.png', '.webp', '.avif', '.gif']);
+const imageRoot = path.resolve('public', 'images');
+
+const readImagePaths = (directory, prefix = '') => {
+  if (!fs.existsSync(directory)) return [];
+  return fs.readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
+    const relativePath = prefix ? `${prefix}/${entry.name}` : entry.name;
+    const absolutePath = path.join(directory, entry.name);
+    if (entry.isDirectory()) return readImagePaths(absolutePath, relativePath);
+    return imageExtensions.has(path.extname(entry.name).toLowerCase())
+      ? [`/images/${relativePath}`]
+      : [];
+  });
+};
+
+const editorConfig = {
+  supabaseUrl: import.meta.env.PUBLIC_SUPABASE_URL || '',
+  supabaseKey: import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '',
+  adminEmail: import.meta.env.PUBLIC_ADMIN_LOGIN_EMAIL || '',
+  baseUrl: import.meta.env.BASE_URL,
+  siteUrl: withBase('/'),
+  localAssets: readImagePaths(imageRoot),
+  initialContent: { business, sawmill, firewood },
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="theme-color" content="#18241f" />
+    <title>Site Editor | Pipher Forest Products</title>
+  </head>
+  <body>
+    <script id="editor-config" type="application/json" set:html={JSON.stringify(editorConfig).replace(/</g, '\u003c')} />
+
+    <main class="admin-shell">
+      <section class="login-card" data-login-panel>
+        <a class="admin-brand" href={withBase('/')}>
+          <span><img src={withAsset('/logos/anchor only.png')} alt="" /></span>
+          <strong>Pipher Forest Products</strong>
+        </a>
+        <div data-connection-message hidden>
+          <h1>Editor setup</h1>
+          <p>The secure connection has not been added yet.</p>
+        </div>
+        <form data-login-form>
+          <p class="admin-kicker">Site editor</p>
+          <h1>Enter password</h1>
+          <label for="admin-password">Password</label>
+          <input id="admin-password" name="password" type="password" autocomplete="current-password" required />
+          <p class="form-message" data-login-message aria-live="polite"></p>
+          <button class="admin-button" type="submit">Sign in</button>
+        </form>
+      </section>
+
+      <section class="editor" data-editor hidden>
+        <header class="editor-header">
+          <a class="admin-brand" href={withBase('/')}>
+            <span><img src={withAsset('/logos/anchor only.png')} alt="" /></span>
+            <strong>Pipher Forest Products</strong>
+          </a>
+          <div class="editor-actions">
+            <a href={withBase('/')} target="_blank">View site</a>
+            <button type="button" data-logout>Log out</button>
+          </div>
+        </header>
+
+        <div class="editor-layout">
+          <nav class="editor-nav" aria-label="Editor sections">
+            <button type="button" data-tab="business" aria-current="page">Business details</button>
+            <button type="button" data-tab="sawmill">Sawmill</button>
+            <button type="button" data-tab="firewood">Firewood</button>
+            <button type="button" data-tab="photos">Photos</button>
+          </nav>
+
+          <form class="content-form" data-content-form>
+            <div class="form-status" data-save-message aria-live="polite"></div>
+
+            <section class="editor-panel" data-panel="business">
+              <div class="panel-heading"><p>Business details</p><h1>Contact information</h1></div>
+              <div class="field-grid">
+                <label>Business name<input name="business.companyName" required /></label>
+                <label>Owner<input name="business.owner" /></label>
+                <label>Main phone<input name="business.phone" inputmode="tel" required /></label>
+                <label>Location<input name="business.location" required /></label>
+                <label>Short address<input name="business.address" required /></label>
+                <label>Service area<input name="business.serviceArea" required /></label>
+                <label class="field-wide">Hours<input name="business.hours" required /></label>
+              </div>
+            </section>
+
+            <section class="editor-panel" data-panel="sawmill" hidden>
+              <div class="panel-heading"><p>Sawmill</p><h1>Homepage and products</h1></div>
+              <div class="field-grid">
+                <label class="field-wide">Main heading<input name="sawmill.headline" required /></label>
+                <label class="field-wide">Short description<textarea name="sawmill.intro" required></textarea></label>
+                <label class="field-wide">Main photo<select name="sawmill.heroImage" data-image-select></select></label>
+                <label class="field-wide">Main photo description<input name="sawmill.heroImageAlt" required /></label>
+              </div>
+              <div class="list-heading"><h2>Products</h2><button type="button" data-add-product="sawmill">Add product</button></div>
+              <div class="product-editors" data-product-editors="sawmill"></div>
+            </section>
+
+            <section class="editor-panel" data-panel="firewood" hidden>
+              <div class="panel-heading"><p>Firewood</p><h1>Homepage and products</h1></div>
+              <div class="field-grid">
+                <label class="field-wide">Main heading<input name="firewood.headline" required /></label>
+                <label class="field-wide">Short description<textarea name="firewood.intro" required></textarea></label>
+                <label>Firewood phone<input name="firewood.phone" inputmode="tel" required /></label>
+                <label>Notice<input name="firewood.notice" required /></label>
+                <label class="field-wide">Main photo<select name="firewood.heroImage" data-image-select></select></label>
+                <label class="field-wide">Main photo description<input name="firewood.heroImageAlt" required /></label>
+                <label class="field-wide">Pickup information<textarea name="firewood.pickup" required></textarea></label>
+                <label class="field-wide">Delivery information<textarea name="firewood.delivery" required></textarea></label>
+              </div>
+              <div class="list-heading"><h2>Products and prices</h2><button type="button" data-add-product="firewood">Add product</button></div>
+              <div class="product-editors" data-product-editors="firewood"></div>
+              <div class="list-heading"><h2>Firewood photos</h2><button type="button" data-add-gallery>Add photo</button></div>
+              <div class="gallery-editors" data-gallery-editors></div>
+            </section>
+
+            <section class="editor-panel" data-panel="photos" hidden>
+              <div class="panel-heading"><p>Photos</p><h1>Image library</h1></div>
+              <label class="upload-box" for="photo-upload">
+                <strong>Upload photos</strong>
+                <span>JPEG, PNG, or WebP. Large photos are resized automatically.</span>
+                <input id="photo-upload" type="file" accept="image/jpeg,image/png,image/webp" multiple data-photo-upload />
+              </label>
+              <p class="upload-message" data-upload-message aria-live="polite"></p>
+              <div class="asset-grid" data-asset-grid></div>
+            </section>
+
+            <div class="save-bar">
+              <span data-unsaved-message>No unsaved changes</span>
+              <button class="admin-button" type="submit">Save changes</button>
+            </div>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <script src="../../scripts/admin.ts"></script>
+  </body>
+</html>

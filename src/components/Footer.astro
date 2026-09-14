@@ -1,42 +1,48 @@
 ---
-import { siteConfig, withBase } from '../config/site';
+import { siteConfig, withAsset, withBase } from '../config/site';
 
 const navLinks = [
-  { href: '/', label: 'Home' },
   { href: '/products', label: 'Products' },
   { href: '/services', label: 'Services' },
   { href: '/gallery', label: 'Gallery' },
   { href: '/faq', label: 'FAQ' },
-  { href: '/quote', label: 'Quote' },
+  { href: '/quote', label: 'Request a quote' },
 ];
+
+const baseUrl = import.meta.env.BASE_URL;
+const currentPath = Astro.url.pathname.replace(baseUrl, '/');
+const isFirewood = currentPath.startsWith('/firewood');
+const links = isFirewood
+  ? [
+      { href: '/firewood/#pricing', label: 'Pricing' },
+      { href: '/firewood/#pickup-delivery', label: 'Pickup & delivery' },
+      { href: '/firewood/#photos', label: 'Photos' },
+      { href: '/', label: 'Sawmill' },
+    ]
+  : navLinks;
 ---
 <footer class="site-footer">
-  <div class="container footer-grid">
-    <div>
-      <h4>{siteConfig.companyName}</h4>
-      <p>Owner: {siteConfig.owner}</p>
-      <p>{siteConfig.serviceArea}</p>
+  <div class="container footer-top">
+    <div class="footer-brand">
+      <span class="brand-logo footer-logo" aria-hidden="true">
+        <img src={withAsset('/logos/anchor only.png')} alt="" width="1536" height="1024" loading="lazy" />
+      </span>
+      <h2><span data-live-text="business.companyName">{siteConfig.companyName}</span>{isFirewood && <small>Firewood</small>}</h2>
+      <p>{isFirewood ? 'Firewood pickup and delivery.' : 'Sawmill products and custom milling.'}</p>
     </div>
-    <div>
-      <h4>Contact</h4>
-      <p>
-        <a href={siteConfig.phoneHref}>{siteConfig.phone}</a>
-      </p>
-      <p>{siteConfig.hours}</p>
-      <p>{siteConfig.address}</p>
+    <div class="footer-column">
+      <p class="footer-label">Explore</p>
+      {links.map((link) => <a href={withBase(link.href)}>{link.label}</a>)}
     </div>
-    <div>
-      <h4>Explore</h4>
-      {navLinks.map((link) => (
-        <p>
-          <a href={withBase(link.href)}>{link.label}</a>
-        </p>
-      ))}
+    <div class="footer-column">
+      <p class="footer-label">Contact</p>
+      <a href={siteConfig.phoneHref} data-live-phone-href={isFirewood ? 'firewood.phone' : 'business.phone'} data-live-text={isFirewood ? 'firewood.phone' : 'business.phone'}>{siteConfig.phone}</a>
+      <span data-live-text="business.address">{siteConfig.address}</span>
+      <span data-live-text="business.serviceArea">{siteConfig.serviceArea}</span>
     </div>
-    <div>
-      <h4>Signature</h4>
-      <p>Aspen tongue-and-groove interior finishes</p>
-      <p>40ft beam capability for custom builds</p>
-    </div>
+  </div>
+  <div class="container footer-bottom">
+    <span>© {new Date().getFullYear()} {siteConfig.companyName}</span>
+    <a href={withAsset('/admin/index.html')}>Site editor</a>
   </div>
 </footer>

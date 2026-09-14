@@ -1,67 +1,58 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Section from '../components/Section.astro';
-import Card from '../components/Card.astro';
-import CTAButtons from '../components/CTAButtons.astro';
-import { siteConfig } from '../config/site';
+import sawmill from '../content/sawmill.json';
+import { siteConfig, withAsset, withBase } from '../config/site';
+
+const otherProducts = [
+  ['House logs', 'Available dimensions and species vary.'],
+  ['Fence material', 'Posts, rails, planks, and other material.'],
+  ['Rough-cut lumber', 'Cut to requested thickness, width, and length.'],
+  ['Custom orders', 'Contact the mill with the species, dimensions, and quantity.'],
+];
 ---
-<BaseLayout title="Products" description="Anchor Timber products including Aspen tongue-and-groove, Blue Stain Pine, beams, and custom lumber.">
-  <Section
-    eyebrow="Signature Product"
-    title="Aspen Tongue-and-Groove"
-    subtitle="Our flagship interior finish with crisp profiles, tight joints, and premium Aspen grain."
-  >
-    <div class="grid grid-2">
-      <Card title="Profile Options" text="Placeholder for V-groove, square edge, and custom profiles." />
-      <Card title="Thickness / Width" text="Placeholder for thickness and face width options." />
-      <Card title="Typical Lengths" text="Placeholder for standard and custom run lengths." />
-      <Card title="Finish Options" text="Placeholder for natural, sanded, or prefinished options." />
-      <Card title="Volume Pricing" text="Placeholder for tiered pricing and large-order availability." />
+
+<BaseLayout title="Sawmill Products" description="Sawmill products from Pipher Forest Products in Crawford, Colorado.">
+  <Section eyebrow="Sawmill" title="Products" subtitle="Call for current species, dimensions, pricing, and lead time.">
+    <div class="catalog-list" data-live-products="sawmill:catalog">
+      {sawmill.products.map((product) => (
+        <article class="catalog-item">
+          <img src={withAsset(product.image)} alt={product.imageAlt} loading="lazy" decoding="async" />
+          <div>
+            <p class="product-availability">{product.availability}</p>
+            <h3>{product.name}</h3>
+            <p>{product.description}</p>
+          </div>
+          <strong>{product.price}</strong>
+        </article>
+      ))}
     </div>
   </Section>
 
-  <Section eyebrow="Product Lines" title="Core Product Categories" subtitle="Built to spec for builders, ranches, and custom installs.">
-    <div class="grid grid-3">
-      <Card
-        title="Blue Stain Pine"
-        text="Character-rich pine boards with blue stain for rustic builds and accent work."
-      />
-      <Card title="Beams & Timbers" text="Custom milled beams and timbers up to 40ft in length." />
-      <Card title="Dimensional Lumber" text="Standard and custom thickness for framing and finish." />
-      <Card title="Ranch & Fencing" text="Utility lumber for posts, rails, and ranch structures." />
-      <Card title="Custom Orders" text="Request special profiles, dimensions, or drying." />
-      <Card title="Aspen T&G Add-ons" text="Trim, casing, and matching interior elements." />
+  <Section eyebrow="Other products" title="Also available">
+    <div class="simple-list">
+      {otherProducts.map(([name, description]) => (
+        <article>
+          <h3>{name}</h3>
+          <p>{description}</p>
+        </article>
+      ))}
     </div>
   </Section>
 
-  <Section
-    eyebrow="Oversized Capability"
-    title="Beams and Timbers"
-    subtitle="Large-dimension milling for long spans and heavy structure."
-  >
-    <div class="card">
-      <h3>Up to 40ft Beams</h3>
-      <p>
-        We can mill long, straight beams up to 40ft for trusses, pavilions, barns, and
-        custom architecture. Confirm species, sizing, and lead times when requesting a quote.
-      </p>
-    </div>
-  </Section>
-
-  <Section eyebrow="Species" title="Species & Availability" subtitle="Availability changes seasonally. Contact us for current stock.">
-    <div class="grid grid-2">
-      <Card title="Aspen" text="Signature species for T&G and interior finish work." />
-      <Card title="Pine / Fir" text="Placeholder for structural and general-use lumber." />
-      <Card title="Hardwoods" text="Placeholder for Blue Stain Pine and specialty projects." />
-      <Card title="Custom Requests" text="Tell us the species or log source you want milled." />
-    </div>
-  </Section>
-
-  <Section eyebrow="Quote" title="Ready for Pricing" subtitle="Share your specs and we will confirm timeline and volume pricing.">
-    <div class="cta-band">
-      <div class="btn-group">
-        <CTAButtons />
+  <section class="home-cta">
+    <div class="container home-cta-grid">
+      <div>
+        <p class="eyebrow">Quote</p>
+        <h2>Send the product, dimensions, and quantity.</h2>
+      </div>
+      <div class="home-cta-action">
+        <p>We will confirm material, price, and timing.</p>
+        <div class="btn-group">
+          <a class="btn btn-light" href={withBase('/quote')}>Request a quote</a>
+          <a class="text-link" href={siteConfig.phoneHref}>{siteConfig.phone}</a>
+        </div>
       </div>
     </div>
-  </Section>
+  </section>
 </BaseLayout>

@@ -1,66 +1,113 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Hero from '../components/Hero.astro';
-import Section from '../components/Section.astro';
-import Card from '../components/Card.astro';
-import CTAButtons from '../components/CTAButtons.astro';
-import { siteConfig, withBase } from '../config/site';
+import sawmill from '../content/sawmill.json';
+import { siteConfig, withAsset, withBase } from '../config/site';
 
-const heroStats = [
-  { label: 'Location', value: 'Crawford, CO' },
-  { label: 'Lead Time', value: siteConfig.leadTime },
-  { label: 'Delivery', value: 'Available (details on request)' },
-  { label: 'Custom Cuts', value: 'Up to 40ft beams' },
+const capabilities = [
+  ['Crawford, Colorado', 'Mill location'],
+  ['Up to 40 feet', 'Beam length'],
+  ['Made to order', 'Custom dimensions'],
+  ['Western Slope', 'Pickup and delivery'],
 ];
-
 ---
+
 <BaseLayout title={siteConfig.companyName} description={siteConfig.description}>
-  <Hero
-    title={siteConfig.companyName}
-    description="Locally owned and operated, Anchor Timber mills premium Aspen tongue-and-groove, blue stain pine, beams up to 40' in length, and other custom milled lumber and logs."
-    stats={heroStats}
-  />
+  <section class="home-hero">
+    <div class="container home-hero-grid">
+      <div class="home-hero-copy">
+        <p class="eyebrow">Sawmill · Crawford, Colorado</p>
+        <h1 data-live-text="sawmill.headline">{sawmill.headline}</h1>
+        <p class="home-hero-lede" data-live-text="sawmill.intro">{sawmill.intro}</p>
+        <div class="btn-group home-hero-actions">
+          <a class="btn btn-primary" href={withBase('/products')}>View products</a>
+          <a class="btn btn-outline" href={withBase('/quote')}>Request a quote</a>
+        </div>
+      </div>
 
-  <Section
-    eyebrow="Products"
-    title="Milled for Your Build"
-    subtitle="Check out the products page for more details and images of Anchor Timber products."
-  >
-    <div class="grid grid-3">
-      <Card
-        title="Aspen Tongue-and-Groove"
-        text="Featured product with consistent profiles, smooth faces, and a kiln dried precise fit."
-      />
-      <Card
-        title="Blue Stain Pine"
-        text="Character-rich pine boards with natural blue stain for rustic interiors and accent work."
-      />
-      <Card title="Beams & Timbers" text="Up to 40ft lengths with multiple species available." />
-      <Card title="Dimensional Lumber" text="Custom milled upon request and sometimes in stock." />
-      <Card title="Ranch & Fencing" text="Material for posts, rails, planks, stays and more." />
-      <Card title="Custom Orders" text="Special species, profiles, and requests. Call to get a quote on your material needs." />
+      <figure class="home-hero-visual">
+        <img
+          src={withAsset(sawmill.heroImage)}
+          alt={sawmill.heroImageAlt}
+          width="4032"
+          height="3024"
+          loading="eager"
+          fetchpriority="high"
+          data-live-image="sawmill.heroImage"
+          data-live-alt="sawmill.heroImageAlt"
+        />
+      </figure>
     </div>
-  </Section>
+  </section>
 
-  <Section
-    eyebrow="Services"
-    title="Custom Milling Services"
-    subtitle="Bring logs or a cut list and we will handle the milling, surfacing, and delivery."
-  >
-    <div class="grid grid-3">
-      <Card title="Planing & Surfacing" text="Smooth, ready-to-install material with consistent thickness." />
-      <Card title="Drying / Kiln Drying" text="Seasoning options available as needed (confirm availability)." />
-      <Card title="Specialty Cuts" text="Custom dimensions, large beams, and unique profiles." />
-      <Card title="Delivery" text="Schedule pickup or delivery across the Western Slope." />
-    </div>
-  </Section>
-
-  <Section eyebrow="Gallery" title="Recent Work" subtitle="Placeholder previews for Blue Stain Pine, beams, and Aspen T&G.">
-    <div class="gallery-grid">
-      {Array.from({ length: 8 }).map(() => (
-        <div class="gallery-item"></div>
+  <section class="capability-strip" aria-label="Mill information">
+    <div class="container capability-grid">
+      {capabilities.map(([value, label], index) => (
+        <div class="capability" style={`--index: "0${index + 1}"`}>
+          <strong>{value}</strong>
+          <span>{label}</span>
+        </div>
       ))}
     </div>
-  </Section>
+  </section>
 
+  <section class="home-section product-showcase">
+    <div class="container">
+      <div class="home-section-heading compact-heading">
+        <p class="eyebrow">Products</p>
+        <h2>Sawmill products</h2>
+        <p>Call for current species, sizes, lead times, and pricing.</p>
+      </div>
+
+      <div class="product-feature-grid" data-live-products="sawmill:home" data-detail-url={withBase('/products')}>
+        {sawmill.products.map((product) => (
+          <a class="product-feature" href={withBase('/products')}>
+            <figure>
+              <img src={withAsset(product.image)} alt={product.imageAlt} loading="lazy" decoding="async" />
+            </figure>
+            <div class="product-feature-copy">
+              <div class="product-status">
+                <span>{product.availability}</span>
+                <span>{product.price}</span>
+              </div>
+              <h3>{product.name}</h3>
+              <p>{product.description}</p>
+              <span class="text-link">Details</span>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="home-section feature-split">
+    <div class="container feature-split-grid">
+      <figure class="feature-split-image">
+        <img
+          src={withAsset('/images/aspen-tng/IMG_1988.jpeg')}
+          alt="Aspen tongue-and-groove installed in a timber-framed building"
+          loading="lazy"
+          decoding="async"
+        />
+      </figure>
+      <div class="feature-split-copy">
+        <p class="eyebrow">Aspen T&amp;G</p>
+        <h2>Aspen tongue-and-groove</h2>
+        <p>Available for walls and ceilings in custom lengths and profiles.</p>
+        <a class="btn btn-outline" href={withBase('/gallery')}>View photos</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="home-cta">
+    <div class="container home-cta-grid">
+      <div>
+        <p class="eyebrow">Orders</p>
+        <h2>Send your dimensions and quantity.</h2>
+      </div>
+      <div class="home-cta-action">
+        <p>We will confirm material, price, timing, pickup, or delivery.</p>
+        <a class="btn btn-light" href={withBase('/quote')}>Request a quote</a>
+      </div>
+    </div>
+  </section>
 </BaseLayout>
