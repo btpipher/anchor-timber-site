@@ -246,18 +246,23 @@ select:focus { border-color: var(--green); outline: 0; box-shadow: 0 0 0 1px var
 
 .image-picker { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; padding: 1.5rem; }
 .image-picker-backdrop { position: absolute; inset: 0; border: 0; background: rgba(14, 20, 17, 0.72); cursor: pointer; }
-.image-picker-dialog { position: relative; display: flex; width: min(1080px, 100%); max-height: calc(100vh - 3rem); flex-direction: column; padding: 1.5rem; border: 1px solid var(--line); background: var(--paper); box-shadow: 0 28px 90px rgba(0, 0, 0, 0.3); }
+.image-picker-dialog { position: relative; display: flex; width: min(1200px, 100%); height: min(820px, calc(100vh - 3rem)); flex-direction: column; padding: 1.5rem; border: 1px solid var(--line); background: var(--paper); box-shadow: 0 28px 90px rgba(0, 0, 0, 0.3); }
 .image-picker-dialog header { display: flex; align-items: flex-start; justify-content: space-between; gap: 2rem; }
 .image-picker-dialog h2 { margin: 0; font-family: "Iowan Old Style", Baskerville, serif; font-size: 2.2rem; font-weight: 500; }
 .image-picker-dialog header > button { padding: 0; border: 0; border-bottom: 1px solid currentColor; background: transparent; color: var(--green); cursor: pointer; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; }
 .image-picker-search { margin: 1.25rem 0; }
-.image-picker-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 0.8rem; overflow-y: auto; overscroll-behavior: contain; }
+.image-picker-grid { display: grid; min-height: 0; flex: 1; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0.9rem; align-content: start; overflow-y: auto; overscroll-behavior: contain; }
 .image-picker-card { display: grid; align-content: start; padding: 0; overflow: hidden; border: 2px solid transparent; border-radius: 3px; background: var(--surface); color: var(--ink); cursor: pointer; text-align: left; }
 .image-picker-card:hover,
 .image-picker-card[aria-current="true"] { border-color: var(--green); }
 .image-picker-card img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; background: #ded9ce; }
-.image-picker-card span { overflow: hidden; padding: 0.65rem; font-size: 0.68rem; font-weight: 600; text-overflow: ellipsis; text-transform: capitalize; white-space: nowrap; }
+.image-picker-card span { min-height: 3.1rem; padding: 0.65rem; font-size: 0.72rem; font-weight: 600; line-height: 1.35; text-transform: capitalize; }
 .image-picker-empty { color: var(--muted); }
+.image-picker-pagination { display: grid; grid-template-columns: 110px 1fr 110px; gap: 1rem; align-items: center; padding-top: 1rem; }
+.image-picker-pagination span { color: var(--muted); font-size: 0.78rem; font-weight: 600; text-align: center; }
+.image-picker-pagination button { min-height: 42px; border: 1px solid var(--green); border-radius: 3px; background: #fff; color: var(--green); cursor: pointer; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; }
+.image-picker-pagination button:hover:not(:disabled) { background: var(--green); color: #fff; }
+.image-picker-pagination button:disabled { border-color: var(--line); color: #9a9d97; cursor: default; }
 
 .remove-button { justify-self: end; border: 0; background: transparent; color: var(--error); cursor: pointer; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; }
 
@@ -330,6 +335,10 @@ select:focus { border-color: var(--green); outline: 0; box-shadow: 0 0 0 1px var
   .image-picker-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .save-bar { left: 0; padding: 0.7rem 1rem; }
   .save-bar span { display: none; }
+}
+
+@media (min-width: 761px) and (max-width: 1050px) {
+  .image-picker-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 }
 
 @media (max-width: 480px) {

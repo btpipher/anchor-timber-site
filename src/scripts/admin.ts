@@ -39,11 +39,17 @@ const uploadMessage = document.querySelector<HTMLElement>('[data-upload-message]
 const imagePicker = document.querySelector<HTMLElement>('[data-image-picker]')!;
 const imagePickerGrid = document.querySelector<HTMLElement>('[data-image-picker-grid]')!;
 const imagePickerSearch = document.querySelector<HTMLInputElement>('[data-image-picker-search]')!;
+const imagePickerPrevious = document.querySelector<HTMLButtonElement>('[data-image-picker-previous]')!;
+const imagePickerNext = document.querySelector<HTMLButtonElement>('[data-image-picker-next]')!;
+const imagePickerStatus = document.querySelector<HTMLElement>('[data-image-picker-status]')!;
 
 let content: SiteContent = structuredClone(config.initialContent);
 let remoteAssets: string[] = [];
 let dirty = false;
 let activeImageSelect: HTMLSelectElement | null = null;
+let imagePickerPage = 0;
+
+const imagePickerPageSize = 10;
 
 const field = (name: string) => contentForm.querySelector<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>(`[name="${name}"]`)!;
 const setField = (name: string, value = '') => { field(name).value = value; };
@@ -90,6 +96,7 @@ const syncImageChoice = (select: HTMLSelectElement) => {
 const closeImagePicker = () => {
   imagePicker.hidden = true;
   activeImageSelect = null;
+  imagePickerPage = 0;
   imagePickerSearch.value = '';
   document.body.style.overflow = '';
 };
@@ -108,12 +115,17 @@ const renderImagePicker = (query = '') => {
   const assets = allAssets().filter((source) => (
     !normalizedQuery || `${source} ${assetContext(source)}`.toLowerCase().includes(normalizedQuery)
   ));
+  const pageCount = Math.max(1, Math.ceil(assets.length / imagePickerPageSize));
+  imagePickerPage = Math.min(Math.max(0, imagePickerPage), pageCount - 1);
+  const firstIndex = imagePickerPage * imagePickerPageSize;
+  const pageAssets = assets.slice(firstIndex, firstIndex + imagePickerPageSize);
   imagePickerGrid.replaceChildren();
 
-  for (const source of assets) {
+  for (const source of pageAssets) {
     const button = document.createElement('button');
     button.type = 'button';
     button.className = 'image-picker-card';
+    button.setAttribute('aria-label', `Choose ${assetContext(source)}`);
     if (source === activeImageSelect?.value) button.setAttribute('aria-current', 'true');
     const image = document.createElement('img');
     image.src = displayUrl(source);
@@ -132,10 +144,18 @@ const renderImagePicker = (query = '') => {
     empty.textContent = 'No matching photos.';
     imagePickerGrid.append(empty);
   }
+
+  imagePickerPrevious.disabled = imagePickerPage === 0;
+  imagePickerNext.disabled = imagePickerPage >= pageCount - 1 || assets.length === 0;
+  imagePickerStatus.textContent = assets.length
+    ? `Photos ${firstIndex + 1}–${Math.min(firstIndex + imagePickerPageSize, assets.length)} of ${assets.length}`
+    : 'No photos';
 };
 
 const openImagePicker = (select: HTMLSelectElement) => {
   activeImageSelect = select;
+  const selectedIndex = allAssets().indexOf(select.value);
+  imagePickerPage = selectedIndex >= 0 ? Math.floor(selectedIndex / imagePickerPageSize) : 0;
   renderImagePicker();
   imagePicker.hidden = false;
   document.body.style.overflow = 'hidden';
@@ -499,7 +519,20 @@ document.querySelectorAll<HTMLButtonElement>('[data-close-image-picker]').forEac
   button.addEventListener('click', closeImagePicker);
 });
 
-imagePickerSearch.addEventListener('input', () => renderImagePicker(imagePickerSearch.value));
+imagePickerSearch.addEventListener('input', () => {
+  imagePickerPage = 0;
+  renderImagePicker(imagePickerSearch.value);
+});
+
+imagePickerPrevious.addEventListener('click', () => {
+  imagePickerPage -= 1;
+  renderImagePicker(imagePickerSearch.value);
+});
+
+imagePickerNext.addEventListener('click', () => {
+  imagePickerPage += 1;
+  renderImagePicker(imagePickerSearch.value);
+});
 
 document.addEventListener('keydown', (event) => {
   if (event.key === 'Escape' && !imagePicker.hidden) closeImagePicker();
