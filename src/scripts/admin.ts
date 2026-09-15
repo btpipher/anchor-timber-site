@@ -36,10 +36,14 @@ const contentForm = document.querySelector<HTMLFormElement>('[data-content-form]
 const saveMessage = document.querySelector<HTMLElement>('[data-save-message]')!;
 const unsavedMessage = document.querySelector<HTMLElement>('[data-unsaved-message]')!;
 const uploadMessage = document.querySelector<HTMLElement>('[data-upload-message]')!;
+const imagePicker = document.querySelector<HTMLElement>('[data-image-picker]')!;
+const imagePickerGrid = document.querySelector<HTMLElement>('[data-image-picker-grid]')!;
+const imagePickerSearch = document.querySelector<HTMLInputElement>('[data-image-picker-search]')!;
 
 let content: SiteContent = structuredClone(config.initialContent);
 let remoteAssets: string[] = [];
 let dirty = false;
+let activeImageSelect: HTMLSelectElement | null = null;
 
 const field = (name: string) => contentForm.querySelector<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>(`[name="${name}"]`)!;
 const setField = (name: string, value = '') => { field(name).value = value; };
@@ -66,6 +70,107 @@ const setDirty = (value: boolean) => {
 
 const allAssets = () => [...new Set([...config.localAssets, ...remoteAssets])];
 
+const assetContext = (source: string) => {
+  if (/^https?:\/\//.test(source)) return `Uploaded · ${assetLabel(source)}`;
+  const parts = source.split('/').filter(Boolean);
+  const folder = parts.at(-2)?.replace(/-/g, ' ') || 'Site photo';
+  return `${folder} · ${assetLabel(source)}`;
+};
+
+const syncImageChoice = (select: HTMLSelectElement) => {
+  const choice = select.closest<HTMLElement>('[data-image-choice]');
+  if (!choice) return;
+  const preview = choice.querySelector<HTMLImageElement>('[data-image-choice-preview]')!;
+  const name = choice.querySelector<HTMLElement>('[data-image-choice-name]')!;
+  preview.src = displayUrl(select.value);
+  preview.hidden = !select.value;
+  name.textContent = select.value ? assetContext(select.value) : 'No photo selected';
+};
+
+const closeImagePicker = () => {
+  imagePicker.hidden = true;
+  activeImageSelect = null;
+  imagePickerSearch.value = '';
+  document.body.style.overflow = '';
+};
+
+const chooseImage = (source: string) => {
+  if (!activeImageSelect) return;
+  activeImageSelect.value = source;
+  activeImageSelect.dispatchEvent(new Event('change', { bubbles: true }));
+  syncImageChoice(activeImageSelect);
+  setDirty(true);
+  closeImagePicker();
+};
+
+const renderImagePicker = (query = '') => {
+  const normalizedQuery = query.trim().toLowerCase();
+  const assets = allAssets().filter((source) => (
+    !normalizedQuery || `${source} ${assetContext(source)}`.toLowerCase().includes(normalizedQuery)
+  ));
+  imagePickerGrid.replaceChildren();
+
+  for (const source of assets) {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'image-picker-card';
+    if (source === activeImageSelect?.value) button.setAttribute('aria-current', 'true');
+    const image = document.createElement('img');
+    image.src = displayUrl(source);
+    image.alt = '';
+    image.loading = 'lazy';
+    const name = document.createElement('span');
+    name.textContent = assetContext(source);
+    button.append(image, name);
+    button.addEventListener('click', () => chooseImage(source));
+    imagePickerGrid.append(button);
+  }
+
+  if (!assets.length) {
+    const empty = document.createElement('p');
+    empty.className = 'image-picker-empty';
+    empty.textContent = 'No matching photos.';
+    imagePickerGrid.append(empty);
+  }
+};
+
+const openImagePicker = (select: HTMLSelectElement) => {
+  activeImageSelect = select;
+  renderImagePicker();
+  imagePicker.hidden = false;
+  document.body.style.overflow = 'hidden';
+  imagePickerSearch.focus();
+};
+
+const enhanceImageSelect = (select: HTMLSelectElement) => {
+  if (select.closest('[data-image-choice]')) {
+    syncImageChoice(select);
+    return;
+  }
+
+  const choice = document.createElement('div');
+  choice.className = 'image-choice';
+  choice.dataset.imageChoice = '';
+  const preview = document.createElement('img');
+  preview.className = 'image-choice-preview';
+  preview.dataset.imageChoicePreview = '';
+  preview.alt = '';
+  const details = document.createElement('div');
+  details.className = 'image-choice-details';
+  const name = document.createElement('span');
+  name.dataset.imageChoiceName = '';
+  const button = document.createElement('button');
+  button.type = 'button';
+  button.className = 'choose-image-button';
+  button.textContent = 'Browse photos';
+  button.addEventListener('click', () => openImagePicker(select));
+  details.append(name, button);
+  select.classList.add('image-select-native');
+  select.parentElement!.append(choice);
+  choice.append(preview, details, select);
+  syncImageChoice(select);
+};
+
 const fillImageSelect = (select: HTMLSelectElement, selected = '') => {
   select.replaceChildren();
   const empty = document.createElement('option');
@@ -88,6 +193,7 @@ const fillImageSelect = (select: HTMLSelectElement, selected = '') => {
     option.selected = true;
     select.append(option);
   }
+  enhanceImageSelect(select);
 };
 
 const refreshImageSelects = () => {
@@ -128,8 +234,8 @@ const makeImageSelect = (value: string, key: string) => {
   select.dataset.productField = key;
   select.dataset.imageSelect = '';
   select.required = true;
-  fillImageSelect(select, value);
   label.append(select);
+  fillImageSelect(select, value);
   return { label, select };
 };
 
@@ -188,8 +294,8 @@ const readProducts = (section: 'sawmill' | 'firewood') => {
   });
 };
 
-const renderGallery = (photos: GalleryPhoto[]) => {
-  const container = document.querySelector<HTMLElement>('[data-gallery-editors]')!;
+const renderGallery = (section: 'sawmill' | 'firewood', photos: GalleryPhoto[]) => {
+  const container = document.querySelector<HTMLElement>(`[data-gallery-editors="${section}"]`)!;
   container.replaceChildren();
   photos.forEach((photo) => {
     const card = document.createElement('article');
@@ -220,7 +326,7 @@ const renderGallery = (photos: GalleryPhoto[]) => {
   });
 };
 
-const readGallery = () => [...document.querySelectorAll<HTMLElement>('[data-gallery-card]')].map((card) => ({
+const readGallery = (section: 'sawmill' | 'firewood') => [...document.querySelectorAll<HTMLElement>(`[data-gallery-editors="${section}"] [data-gallery-card]`)].map((card) => ({
   image: card.querySelector<HTMLSelectElement>('[data-gallery-field="image"]')!.value,
   alt: card.querySelector<HTMLInputElement>('[data-gallery-field="alt"]')!.value.trim(),
 }));
@@ -236,7 +342,8 @@ const populateEditor = () => {
   fillImageSelect(field('firewood.heroImage') as HTMLSelectElement, firewood.heroImage);
   renderProducts('sawmill', sawmill.products || []);
   renderProducts('firewood', firewood.products || []);
-  renderGallery(firewood.gallery || []);
+  renderGallery('sawmill', sawmill.gallery || []);
+  renderGallery('firewood', firewood.gallery || []);
   renderAssetGrid();
   setDirty(false);
 };
@@ -257,6 +364,7 @@ const collectContent = () => ({
     heroImage: getField('sawmill.heroImage'),
     heroImageAlt: getField('sawmill.heroImageAlt'),
     products: readProducts('sawmill'),
+    gallery: readGallery('sawmill'),
   },
   firewood: {
     headline: getField('firewood.headline'),
@@ -268,7 +376,7 @@ const collectContent = () => ({
     products: readProducts('firewood'),
     pickup: getField('firewood.pickup'),
     delivery: getField('firewood.delivery'),
-    gallery: readGallery(),
+    gallery: readGallery('firewood'),
   },
 });
 
@@ -302,7 +410,7 @@ const loadContent = async () => {
   if (!supabase) return;
   const { data, error } = await supabase.from('site_content').select('id, value');
   if (error) throw error;
-  for (const row of data || []) content[row.id] = row.value;
+  for (const row of data || []) content[row.id] = { ...content[row.id], ...row.value };
 };
 
 const showEditor = async () => {
@@ -377,11 +485,24 @@ document.querySelectorAll<HTMLButtonElement>('[data-add-product]').forEach((butt
   });
 });
 
-document.querySelector<HTMLButtonElement>('[data-add-gallery]')!.addEventListener('click', () => {
-  const gallery = readGallery();
-  gallery.push({ image: '', alt: '' });
-  renderGallery(gallery);
-  setDirty(true);
+document.querySelectorAll<HTMLButtonElement>('[data-add-gallery]').forEach((button) => {
+  button.addEventListener('click', () => {
+    const section = button.dataset.addGallery as 'sawmill' | 'firewood';
+    const gallery = readGallery(section);
+    gallery.push({ image: '', alt: '' });
+    renderGallery(section, gallery);
+    setDirty(true);
+  });
+});
+
+document.querySelectorAll<HTMLButtonElement>('[data-close-image-picker]').forEach((button) => {
+  button.addEventListener('click', closeImagePicker);
+});
+
+imagePickerSearch.addEventListener('input', () => renderImagePicker(imagePickerSearch.value));
+
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape' && !imagePicker.hidden) closeImagePicker();
 });
 
 contentForm.addEventListener('input', () => setDirty(true));

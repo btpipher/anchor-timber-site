@@ -71,6 +71,25 @@ const renderFirewoodProducts = (container: HTMLElement, products: any[]) => {
 };
 
 const renderGallery = (container: HTMLElement, photos: any[]) => {
+  if (container.dataset.liveGalleryLayout === 'sawmill') {
+    container.replaceChildren(...photos.map((photo, index) => {
+      const figure = element('figure', 'gallery-photo');
+      const button = element('button', 'gallery-trigger') as HTMLButtonElement;
+      button.type = 'button';
+      button.dataset.lightboxSrc = assetUrl(photo.image);
+      button.dataset.lightboxAlt = photo.alt;
+      button.setAttribute('aria-label', `Open sawmill photo ${index + 1}`);
+      const image = element('img') as HTMLImageElement;
+      image.src = assetUrl(photo.image);
+      image.alt = photo.alt;
+      image.loading = 'lazy';
+      button.append(image);
+      figure.append(button);
+      return figure;
+    }));
+    return;
+  }
+
   container.replaceChildren(...photos.map((photo) => {
     const image = element('img') as HTMLImageElement;
     image.src = assetUrl(photo.image);

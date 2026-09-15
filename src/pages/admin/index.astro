@@ -82,7 +82,8 @@ const editorConfig = {
             <button type="button" data-tab="business" aria-current="page">Business details</button>
             <button type="button" data-tab="sawmill">Sawmill</button>
             <button type="button" data-tab="firewood">Firewood</button>
-            <button type="button" data-tab="photos">Photos</button>
+            <button type="button" data-tab="galleries">Galleries</button>
+            <button type="button" data-tab="photos">Photo library</button>
           </nav>
 
           <form class="content-form" data-content-form>
@@ -127,8 +128,15 @@ const editorConfig = {
               </div>
               <div class="list-heading"><h2>Products and prices</h2><button type="button" data-add-product="firewood">Add product</button></div>
               <div class="product-editors" data-product-editors="firewood"></div>
-              <div class="list-heading"><h2>Firewood photos</h2><button type="button" data-add-gallery>Add photo</button></div>
-              <div class="gallery-editors" data-gallery-editors></div>
+            </section>
+
+            <section class="editor-panel" data-panel="galleries" hidden>
+              <div class="panel-heading"><p>Galleries</p><h1>Photos visitors see</h1></div>
+              <p class="panel-help">Choose which photos appear on each site. Use Photo library to upload new ones first.</p>
+              <div class="list-heading"><h2>Sawmill gallery</h2><button type="button" data-add-gallery="sawmill">Add photo</button></div>
+              <div class="gallery-editors" data-gallery-editors="sawmill"></div>
+              <div class="list-heading"><h2>Firewood gallery</h2><button type="button" data-add-gallery="firewood">Add photo</button></div>
+              <div class="gallery-editors" data-gallery-editors="firewood"></div>
             </section>
 
             <section class="editor-panel" data-panel="photos" hidden>
@@ -150,6 +158,21 @@ const editorConfig = {
         </div>
       </section>
     </main>
+
+    <div class="image-picker" data-image-picker hidden>
+      <button class="image-picker-backdrop" type="button" aria-label="Close photo picker" data-close-image-picker></button>
+      <section class="image-picker-dialog" role="dialog" aria-modal="true" aria-labelledby="image-picker-title">
+        <header>
+          <div>
+            <p class="admin-kicker">Photo library</p>
+            <h2 id="image-picker-title">Choose a photo</h2>
+          </div>
+          <button type="button" data-close-image-picker>Close</button>
+        </header>
+        <label class="image-picker-search">Find a photo<input type="search" placeholder="Search file or folder" data-image-picker-search /></label>
+        <div class="image-picker-grid" data-image-picker-grid></div>
+      </section>
+    </div>
 
     <script src="../../scripts/admin.ts"></script>
   </body>

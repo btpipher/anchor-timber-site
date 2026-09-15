@@ -28,5 +28,39 @@
       "image": "/images/rough-cut/IMG_2250.jpeg",
       "imageAlt": "Stacks of rough-cut lumber"
     }
+  ],
+  "gallery": [
+    {
+      "image": "/images/aspen-tng/IMG_1995.jpeg",
+      "alt": "Aspen tongue-and-groove boards stacked at the mill"
+    },
+    {
+      "image": "/images/beams/IMG_2060.jpeg",
+      "alt": "Large timber beams stacked outdoors"
+    },
+    {
+      "image": "/images/house-logs/IMG_2146.jpeg",
+      "alt": "House logs milled at Pipher Forest Products"
+    },
+    {
+      "image": "/images/rough-cut/IMG_2250.jpeg",
+      "alt": "Stacks of rough-cut lumber"
+    },
+    {
+      "image": "/images/fence-supplies/IMG_2285.jpeg",
+      "alt": "Fence material at Pipher Forest Products"
+    },
+    {
+      "image": "/images/logs/IMG_2172.jpeg",
+      "alt": "Logs at the mill"
+    },
+    {
+      "image": "/images/aspen-tng/IMG_2811.jpeg",
+      "alt": "Aspen boards at Pipher Forest Products"
+    },
+    {
+      "image": "/images/misc/IMG_2159.jpeg",
+      "alt": "Sawmill yard and wood products"
+    }
   ]
 }
